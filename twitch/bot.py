@@ -19,7 +19,7 @@ with Observer("username", "Oauth") as observer:
                     # TODO get list of mods instead of hard-coding mod usernames
                     mods = ["thefuxia", "smarterchess", "streamlabs", "grubberbot", "lalizig", "paradajzcity",
                     "duellinksguy", "thewretch2", "vietd", "poitaoforpresident", "chesscomchris", "mynameislegyon", "f0rgetaboutit",
-                    "zuname", "rakshakthetall", "drittman13", "expired_febreeze", "strance_02", "marko_sreck", "flyingseverus"]
+                    "zuname", "rakshakthetall", "drittman13", "expired_febreeze", "strance_02", "marko_sreck", "flyingseverus", "pawngrubber"]
 
                     if event.nickname in mods:
                         if "!tts" in message:
