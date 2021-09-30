@@ -440,12 +440,12 @@ async def general_join(mention, user, season_name, join_type, mod=False):
         if num_rapid_games < 10:
             errors.append(
                 f'Minimum 10 rapid games required, `{chesscom}` '
-                f'has played only `{num_rapid_games}` rapid games'
+                f'You have played only `{num_rapid_games}` rapid games. You will need to play `{10 - num_rapid_games}`` more rapid games.'
             )
         if num_games < 50:
             errors.append(
                 f'Minimum 50 games of any time control required, `{chesscom}`'
-                f' has played only `{num_games}` games'
+                f' You have only played `{num_games}` games on chess.com, you will need to play `{10 - num_games}` games.'
             )
 
     if errors:
@@ -461,7 +461,8 @@ async def general_join(mention, user, season_name, join_type, mod=False):
         message = '\n'.join([
             f'{mention} added {user.mention} to the league `{season_name}` season',
             f'* Chess.com username: `{chesscom}`',
-            f'* Signed up as a: `{join_type}`',
+            f'* Signed up as a: `{join_type}` \n',
+            'You can verify your sign up here: https://docs.google.com/spreadsheets/d/1SFH7ntDpDW7blX_xBU_m_kSmvY2tLXkuwq-TOM9wyew/edit?usp=sharing'
         ])
     return message
 
