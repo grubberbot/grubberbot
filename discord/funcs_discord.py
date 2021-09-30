@@ -105,7 +105,7 @@ async def announce_pairing(bot, guild):
         )
         LDB.set_thread_id(row.game_id, thread.id)
         message = (
-            'Hi! September Rapid League Week 3 has started, please use '
+            'Hi! Week 4 of the September Rapid League has started, please use '
             'this thread so I can help you.  This thread is for:\n'
             '* **Scheduling your rapid game**  Any conversation outside of this '
             'thread cannot be regulated by moderators, please do all of your '
@@ -113,15 +113,16 @@ async def announce_pairing(bot, guild):
             '* **Posting your game on the calendar** When you decide on a '
             'game time, confirm it with '
             '`!schedule YYYY-MM-DD HH:MM <time_zone>`\n'
+            'Where <time_zone> is a time zone from the TZ database name column (ensure the Status is Canonical) here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones'
             '* **Posting your result**  When your game is done please use '
             '`!set_result <url>` (in this thread) where `<url>` is a link '
-            'to the chess.com game.\n\n'
+            'to the chess.com game.\n'
             f'<@{row.white_discord_id}> will play white\n'
             f'<@{row.black_discord_id}> will play black\n'
             'See the pairings online: https://docs.google.com/spreadsheets/d/1SFH7ntDpDW7blX_xBU_m_kSmvY2tLXkuwq-TOM9wyew/edit#gid=2039965781\n\n'
             'Some more things:\n'
             '* You have until **September 23rd 11:59pm ET** to play your game.\n'
-            '* If you need a substitute please ask in the #league-moderation room.\n'
+            '* If you need a substitute use the `!request_substitute_current` command.\n'
             '* Contact your opponent as soon as possible.  If you wait too '
             'long to contact your opponent, a substitute will be called to '
             'replace you.  \n'
