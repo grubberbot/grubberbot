@@ -445,7 +445,7 @@ async def general_join(mention, user, season_name, join_type, mod=False):
         if num_games < 50:
             errors.append(
                 f'Minimum 50 games of any time control required, `{chesscom}`'
-                f' You have only played `{num_games}` games on chess.com, you will need to play `{10 - num_games}` games.'
+                f' You have only played `{num_games}` games on chess.com, you will need to play `{50 - num_games}` games.'
             )
 
     if errors:
