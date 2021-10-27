@@ -112,8 +112,6 @@ async def announce_pairing(bot, guild):
     for row in rows:
         title = fgg.gen_pairing_thread_name(
             row.game_id,
-            season_name,
-            week_num,
             row.white_discord_name,
             row.black_discord_name,
         )
