@@ -31,10 +31,9 @@ def gen_substitute_thread_name(seed_id):
     name = f"s{seed_id} Substitute Request"
     return name
 
+
 def gen_pairing_thread_name(game_id, white_name, black_name):
-    thread_name = (
-        f'{white_name} vs {black_name} g{game_id}'
-    )
+    thread_name = f"{white_name} vs {black_name} g{game_id}"
     return thread_name
 
 
