@@ -157,6 +157,10 @@ def main():
     bot.add_command(fdd.mod_request_substitute_current)
     bot.add_command(fdd.mod_claim_substitute)
 
+    # If users have left the server
+    bot.add_command(fdd.mod_leave_current_by_id)
+    bot.add_command(fdd.mod_request_substitute_current_by_id)
+
     bot.run(DISCORD_TOKEN)
 
 

@@ -725,16 +725,16 @@ class LeagueDatabase:
             WHERE s.week_id IN week_ids AND s.sub_member_id IN member_ids
         )
         SELECT
-            g.id,
-            g.schedule,
-            g.result,
-            g.url,
-            wu.discord_id,
-            wu.discord_name,
-            wu.chesscom,
-            bu.discord_id,
-            bu.discord_name,
-            bu.chesscom
+            g.id AS game_id,
+            g.schedule AS schedule,
+            g.result AS result,
+            g.url AS url,
+            wu.discord_id AS white_discord_id,
+            wu.discord_name AS white_discord_name,
+            wu.chesscom AS white_chesscom,
+            bu.discord_id AS black_discord_id,
+            bu.discord_name AS black_discord_name,
+            bu.chesscom AS black_chesscom
         FROM game AS g
         LEFT JOIN seed AS ws ON g.white_seed_id = ws.id
         LEFT JOIN member AS wm ON ws.sub_member_id = wm.id
@@ -746,18 +746,6 @@ class LeagueDatabase:
         ;"""
         params = (season_name, week_num)
         df = pd.read_sql_query(sql, self.conn, params=params)
-        df.columns = [
-            "game_id",
-            "schedule",
-            "result",
-            "url",
-            "white_discord_id",
-            "white_discord_name",
-            "white_chesscom",
-            "black_discord_id",
-            "black_discord_name",
-            "black_chesscom",
-        ]
         df["white_rapid_rating"] = [
             self.chess_db.get_rating(c)["rapid"] for c in df["white_chesscom"]
         ]
