@@ -623,7 +623,7 @@ async def mod_leave_current_by_id(ctx, discord_id: int):
     """Remove user from current league"""
     mention = ctx.message.author.mention
     season_name = fgg.get_month(0)
-    message = await general_leave(mention, discord.id, season_name)
+    message = await general_leave(mention, discord_id, season_name)
     await ctx.send(message)
 
 
