@@ -561,16 +561,17 @@ async def mod_join_substitute(ctx, user: discord.Member, join_type: str):
     await ctx.send(message)
 
 
-async def general_leave(mention, user, season_name):
-    if not LDB.is_member(season_name, user.id):
+async def general_leave(mention, user_id, season_name):
+    user_mention = f"<@{user_id}>"
+    if not LDB.is_member(season_name, user_id):
         message = (
-            f"{mention} user {user.mention} is not currently signed up "
+            f"{mention} user {user_mention} is not currently signed up "
             f"for the rapid league `{season_name}` season"
         )
     else:
-        LDB.league_leave(season_name, user.id)
+        LDB.league_leave(season_name, user_id)
         message = (
-            f"{mention} user {user.mention} has left the "
+            f"{mention} user {user_mention} has left the "
             f"rapid league `{season_name}` season"
         )
     return message
@@ -582,7 +583,7 @@ async def user_leave_next(ctx):
     user = ctx.message.author
     mention = user.mention
     season_name = fgg.get_month(1)
-    message = await general_leave(mention, user, season_name)
+    message = await general_leave(mention, user.id, season_name)
     await ctx.send(message)
 
 
@@ -592,7 +593,7 @@ async def mod_leave_next(ctx, discord_mention: discord.Member):
     """Remove user from upcoming league"""
     mention = ctx.message.author.mention
     season_name = fgg.get_month(1)
-    message = await general_leave(mention, discord_mention, season_name)
+    message = await general_leave(mention, discord_mention.id, season_name)
     await ctx.send(message)
 
 
@@ -602,7 +603,7 @@ async def user_leave_current(ctx):
     user = ctx.message.author
     mention = user.mention
     season_name = fgg.get_month(0)
-    message = await general_leave(mention, user, season_name)
+    message = await general_leave(mention, user.id, season_name)
     await ctx.send(message)
 
 
@@ -612,7 +613,17 @@ async def mod_leave_current(ctx, discord_mention: discord.Member):
     """Remove user from current league"""
     mention = ctx.message.author.mention
     season_name = fgg.get_month(0)
-    message = await general_leave(mention, discord_mention, season_name)
+    message = await general_leave(mention, discord_mention.id, season_name)
+    await ctx.send(message)
+
+
+@commands.command(name="mod_leave_current_by_id")
+@commands.has_any_role(*MODERATOR_ROLES)
+async def mod_leave_current_by_id(ctx, discord_id: int):
+    """Remove user from current league"""
+    mention = ctx.message.author.mention
+    season_name = fgg.get_month(0)
+    message = await general_leave(mention, discord.id, season_name)
     await ctx.send(message)
 
 
@@ -975,10 +986,7 @@ async def user_claim_substitute(ctx, seed_id: int):
     await ctx.send(message)
 
 
-help_text = "\n".join([])
-
-
-@commands.command(name="mod_claim_substitute", help=help_text)
+@commands.command(name="mod_claim_substitute")
 @commands.has_any_role(*MODERATOR_ROLES)
 async def mod_claim_substitute(ctx, user: discord.Member, seed_id: int):
     """
@@ -992,12 +1000,14 @@ async def mod_claim_substitute(ctx, user: discord.Member, seed_id: int):
 
 async def general_request_substitute(
     mention,
-    user,
+    user_id,
     guild,
     is_next_season,
     week_num,
     mod=False,
 ):
+
+    user_mention = f"<@{user_id}>"
 
     # Verify that sub week is in 1-4
     sub_weeks = list(range(1, 5))
@@ -1006,34 +1016,34 @@ async def general_request_substitute(
         return message
 
     # Get user chesscom
-    user_data = LDB.get_user_data(user.id)
+    user_data = LDB.get_user_data(user_id)
     if len(user_data) == 0:
-        message = gen_chesscom_username_error(mention, user.mention, mod=False)
+        message = gen_chesscom_username_error(mention, user_mention, mod=False)
         return message
     # chesscom = user_data["chesscom"][0]
 
     # Verify that the user is signed up for the season
     season_name = fgg.get_month(int(is_next_season))
-    if not LDB.is_member(season_name, user.id):
+    if not LDB.is_member(season_name, user_id):
         message = (
-            f"{mention} User {user.mention} is not signed up for "
+            f"{mention} User {user_mention} is not signed up for "
             f"the Rapid League `{season_name}` season"
         )
         return message
 
-    LDB.request_sub(season_name, week_num, user.id)
+    LDB.request_sub(season_name, week_num, user_id)
     message = (
-        f"{mention} user {user.mention} has requested a substitute on "
+        f"{mention} user {user_mention} has requested a substitute on "
         f"week {week_num} of the rapid league `{season_name}` season"
     )
 
-    df = LDB.get_sub_announce(season_name, week_num, user.id)
+    df = LDB.get_sub_announce(season_name, week_num, user_id)
     if len(df) > 0:
         # seed_id = df["seed_id"][0]
         team_name = df["team_name"][0]
         team_mention = discord.utils.get(guild.roles, name=team_name).mention
         await announce_substitute(
-            user.mention,
+            user_mention,
             team_mention,
             guild,
             df["seed_id"][0],
@@ -1051,15 +1061,30 @@ async def user_request_substitute_current(ctx, sub_week: int):
     user = ctx.message.author
     mention = user.mention
     message = await general_request_substitute(
-        mention, user, ctx.guild, False, sub_week
+        mention, user.id, ctx.guild, False, sub_week
     )
     await ctx.send(message)
 
 
-help_text = "\n".join([])
+@commands.command(name="mod_request_substitute_current_by_id")
+@commands.has_any_role(*MODERATOR_ROLES)
+async def mod_request_substitute_current_by_id(
+    ctx,
+    user_id: int,
+    sub_week: int,
+):
+    """
+    <user_id> user's Discord ID
+    <sub_week> one of `1, 2, 3, 4` for the week you want a substitute
+    """
+    mention = ctx.message.author.mention
+    message = await general_request_substitute(
+        mention, user_id, ctx.guild, False, sub_week, mod=True
+    )
+    await ctx.send(message)
 
 
-@commands.command(name="mod_request_substitute_current", help=help_text)
+@commands.command(name="mod_request_substitute_current")
 @commands.has_any_role(*MODERATOR_ROLES)
 async def mod_request_substitute_current(
     ctx,
@@ -1072,7 +1097,7 @@ async def mod_request_substitute_current(
     """
     mention = ctx.message.author.mention
     message = await general_request_substitute(
-        mention, user, ctx.guild, False, sub_week, mod=True
+        mention, user.id, ctx.guild, False, sub_week, mod=True
     )
     await ctx.send(message)
 
@@ -1084,14 +1109,13 @@ async def user_request_substitute_next(ctx, sub_week: int):
     """
     user = ctx.message.author
     mention = user.mention
-    message = await general_request_substitute(mention, user, ctx.guild, True, sub_week)
+    message = await general_request_substitute(
+        mention, user.id, ctx.guild, True, sub_week
+    )
     await ctx.send(message)
 
 
-help_text = "\n".join([])
-
-
-@commands.command(name="mod_request_substitute_next", help=help_text)
+@commands.command(name="mod_request_substitute_next")
 @commands.has_any_role(*MODERATOR_ROLES)
 async def mod_request_substitute_next(
     ctx,
@@ -1104,7 +1128,7 @@ async def mod_request_substitute_next(
     """
     mention = ctx.message.author.mention
     message = await general_request_substitute(
-        mention, user, ctx.guild, True, sub_week, mod=True
+        mention, user.id, ctx.guild, True, sub_week, mod=True
     )
     await ctx.send(message)
 
