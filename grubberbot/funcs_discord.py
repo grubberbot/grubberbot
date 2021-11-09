@@ -948,7 +948,7 @@ async def general_claim_substitute(mention, user, guild, seed_id):
     white_discord_id = df["white_discord_id"][0]
     black_discord_id = df["black_discord_id"][0]
     threads = await get_all_threads(guild)
-    thread = [t for t in threads if t.name.startswith(f"g{game_id}")][0]
+    thread = [t for t in threads if f"g{game_id}" in t.name][0]
 
     message = (
         f"Hi! {user.mention} has claimed a substitute for this game.  "
