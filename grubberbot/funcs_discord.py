@@ -107,7 +107,7 @@ async def announce_pairing(bot, guild):
     week_num = 4
 
     df = LDB.get_games_by_week(season_name, week_num)
-    channel = discord.utils.get(guild.channels, name="📆-league-scheduling")
+    channel = discord.utils.get(guild.channels, id=ANNOUNCE_PAIRINGS_CHANNEL_ID)
 
     rows = list(df.itertuples())
     for row in rows:
@@ -163,7 +163,7 @@ async def announce_pairing(bot, guild):
 
 async def announce_substitute(mention, team_mention, guild, seed_id, week_num):
     # guild = ctx.guild
-    channel = discord.utils.get(guild.channels, name=ANNOUNCE_SUB_CHANNEL)
+    channel = discord.utils.get(guild.channels, id=ANNOUNCE_SUB_CHANNEL)
     title = fgg.gen_substitute_thread_name(seed_id)
     thread = await channel.create_thread(
         name=title,
