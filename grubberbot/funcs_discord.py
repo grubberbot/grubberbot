@@ -510,6 +510,13 @@ async def user_join_current(ctx):
     await ctx.send(message)
 
 
+@commands.command(name="ping")
+async def user_ping(ctx):
+    """Returns client latency in milliseconds."""
+    message = f"{ctx.message.author.mention} {round(bot.latency * 1000,)}"
+    await ctx.send(message)
+
+
 @commands.command(name="mod_join_current")
 @commands.has_any_role(*MODERATOR_ROLES)
 async def mod_join_current(ctx, user: discord.Member, join_type: str):
