@@ -161,6 +161,9 @@ def main():
     bot.add_command(fdd.mod_leave_current_by_id)
     bot.add_command(fdd.mod_request_substitute_current_by_id)
 
+    # Miscellaneous commands
+    bot.add_command(fdd.user_ping)
+
     bot.run(DISCORD_TOKEN)
 
 
