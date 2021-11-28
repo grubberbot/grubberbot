@@ -513,7 +513,7 @@ async def user_join_current(ctx):
 @commands.command(name="ping")
 async def user_ping(ctx):
     """Returns client latency in milliseconds."""
-    message = f"{ctx.message.author.mention} {round(bot.latency * 1000,)}"
+    message = f"{ctx.message.author.mention} {round(bot.latency * 1000, 1)}"
     await ctx.send(message)
 
 
