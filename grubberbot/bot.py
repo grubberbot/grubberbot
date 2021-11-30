@@ -90,6 +90,20 @@ async def on_command_error(ctx, error):
 async def on_command_completion(ctx):
     fdd.update_google_sheet()
 
+@bot.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if not message.guild: # It has to be in a DM
+        channel = client.get_channel(id=867082069134147585) # since this is a private bot, I think it's OK to hardcode the channel id.
+
+        embed = discord.Embed(title=f"Mod Mail from {message.author}", description=f"{message.content}", color=0x000000)
+        await channel.send(embed=embed)
+    else:
+        pass
+
+    await client.process_commands(message)
+
 
 @commands.command(name="commands")
 async def user_commands(ctx):
