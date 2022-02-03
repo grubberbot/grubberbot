@@ -1188,7 +1188,7 @@ async def score(ctx):
     html = fgg.get_html_str(data[0], data[1], data[2], data[3])
     await fgg.save_image(html) # assets/img/score.png should have the updated score now
 
-    file = discord.File("score.png")
+    file = discord.File(".\\assets\\img\\score.png")
     await ctx.send(file=file)
 
 
