@@ -10,7 +10,7 @@ REFRESH_MESSAGE = "Hi! Looks like "
 
 class cellLocationConstants:
     """
-    Constants that help gspread find the cell where the scores 
+    Constants that help gspread find the cell where the scores
     and the team names are defined here.
     """
     SHEET_NAME = "Scoresheet" # Name of the sheet inside the Google Sheet where the scores are located
@@ -19,7 +19,7 @@ class cellLocationConstants:
 
     TEAM_1_NAME_ACELL = "P4"
     TEAM_2_NAME_ACELL = "P5"
-    
+
 
 def get_month(month_delta=0, to_str=True):
     date = datetime.datetime.now()
@@ -122,7 +122,7 @@ def get_scores():
     """
     gc = gspread.service_account(filename=GOOGLE_TOKEN)
 
-    sheet = gc.open_by_url(cellLocationConstants.GOOGLE_SHEET_URL) # 
+    sheet = gc.open_by_url(cellLocationConstants.GOOGLE_SHEET_URL) #
     scoresheet = sheet.worksheet(cellLocationConstants.SCORESHEET_NAME)
 
     team1_score = scoresheet.acell(cellLocationConstants.TEAM_1_SCORE_ACELL).value
@@ -136,11 +136,11 @@ def get_scores():
 
 def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
     """
-    Replaces the Jynga inspired variables, {{ var }} in the 
+    Replaces the Jynga inspired variables, {{ var }} in the
     HTML file with their values. Returns the edited string.
     """
     with open(".\\templates\index.html") as f:
-        
+
         edited_html_str = f.read().replace("{{ team_1_name }}", team_1_name).replace("{{ team_2_name }}", team_2_name).replace("{{ team_1_score }}", team_1_score).replace("{{ team_2_score }}", team_2_score)
         return edited_html_str
 
@@ -149,7 +149,7 @@ async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     """
     Takes in the names of both the teams and the score. Html2Image opens
     a headless browser window (this is why Chrome needs to be added to the Dockerfile)
-    and screenshots the html file, saving it in a file called score.png located in the 
+    and screenshots the html file, saving it in a file called score.png located in the
     img  directory inside the assets folder. If the file already exists, it overwrites it)
     This file is then uploaded to the channel where the !score command was used.
     """
