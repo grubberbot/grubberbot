@@ -1,8 +1,8 @@
 import datetime
-from html2image import Html2Image
 import gspread
 import numpy as np
 import pandas as pd
+from html2image import Html2Image
 
 GOOGLE_TOKEN = "credentials/google_credentials.json"
 GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
@@ -14,7 +14,9 @@ class cellLocationConstants:
     and the team names are defined here.
     """
     SHEET_NAME = "Scoresheet" # Name of the sheet inside the Google Sheet where the scores are located
-    TEAM_1_SCORE_ACELL = "Q4" # {Letter}{Number} coordinates where the value is located.
+    TEAM_1_SCORE_ACELL = (
+        "Q4" # {Letter}{Number} coordinates where the value is located.
+    )
     TEAM_2_SCORE_ACELL = "Q5"
 
     TEAM_1_NAME_ACELL = "P4"
@@ -122,7 +124,7 @@ def get_scores():
     """
     gc = gspread.service_account(filename=GOOGLE_TOKEN)
 
-    sheet = gc.open_by_url(cellLocationConstants.GOOGLE_SHEET_URL) #
+    sheet = gc.open_by_url(cellLocationConstants.GOOGLE_SHEET_URL)
     scoresheet = sheet.worksheet(cellLocationConstants.SCORESHEET_NAME)
 
     team1_score = scoresheet.acell(cellLocationConstants.TEAM_1_SCORE_ACELL).value
@@ -141,7 +143,13 @@ def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
     """
     with open(".\\templates\index.html") as f:
 
-        edited_html_str = f.read().replace("{{ team_1_name }}", team_1_name).replace("{{ team_2_name }}", team_2_name).replace("{{ team_1_score }}", team_1_score).replace("{{ team_2_score }}", team_2_score)
+        edited_html_str = (
+            f.read()
+            .replace("{{ team_1_name }}", team_1_name)
+            .replace("{{ team_2_name }}", team_2_name)
+            .replace("{{ team_1_score }}", team_1_score)
+            .replace("{{ team_2_score }}", team_2_score)
+        )
         return edited_html_str
 
 
@@ -159,6 +167,5 @@ async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     hti = Html2Image(size=(800, 352))
     hti.load_file(".\\templates\\assets\\bg.jpg")
     hti.screenshot(
-        html_str=html, css_file='.\\templates\\styles\\main.css',
-        save_as='score.png'
+        html_str=html, css_file='.\\templates\\styles\\main.css', save_as='score.png'
     )
