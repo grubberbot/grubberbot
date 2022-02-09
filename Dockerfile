@@ -14,6 +14,11 @@ RUN python3.8 -m pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN python3.8 -m pip install --upgrade -r requirements.txt
 
+# Install Google Chrome
+RUN apt install wget
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb
+
 # Install discord from the dev branch
 RUN git clone https://github.com/Rapptz/discord.py
 WORKDIR /usr/src/app/discord.py
