@@ -232,7 +232,6 @@ Temporary Items
 .apdisk
 
 # Custom
-foo/*
 
 # Credential files
 grubberbot/credentials/discord.yml

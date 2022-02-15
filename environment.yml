@@ -1,0 +1,3 @@
+name: grubberbot
+dependencies:
+    - python=3.9
