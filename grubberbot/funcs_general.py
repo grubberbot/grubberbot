@@ -32,10 +32,8 @@ def gen_substitute_thread_name(seed_id):
     return name
 
 
-def gen_pairing_thread_name(game_id, season_name, week_num, white_name, black_name):
-    thread_name = (
-        f"g{game_id} {season_name} Week{week_num} | {white_name} vs {black_name}"
-    )
+def gen_pairing_thread_name(game_id, white_name, black_name):
+    thread_name = f"{white_name} vs {black_name} g{game_id}"
     return thread_name
 
 
