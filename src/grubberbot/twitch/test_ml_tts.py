@@ -2,12 +2,11 @@
 dependencies = [
     'torch', 'gdown', 'pysbd', 'gruut', 'anyascii', 'pypinyin', 'coqpit', 'mecab-python3', 'unidic-lite',
 ]
+import sounddevice
 import torch
-
+import TTS
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
-import TTS
-import sounddevice
 
 message = (
     "Are you kidding? "
@@ -26,7 +25,7 @@ manager = ModelManager('models.json')
     vocoder_name = model_item[
         'default_vocoder'] if vocoder_name is None else vocoder_name
     vocoder_path, vocoder_config_path, _ = manager.download_model(vocoder_name)
-    
+
 synthesizer = Synthesizer(
     tts_checkpoint='tts_models/en/ljspeech/tacotron2-DDC',
     tts_config_path=None,

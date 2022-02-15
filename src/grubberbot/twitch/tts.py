@@ -21,11 +21,14 @@ def str2bool(v):
         return False
     raise argparse.ArgumentTypeError("Boolean value expected.")
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
+
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+
 
 class TTS:
     def __init__(
@@ -98,11 +101,19 @@ class TTS:
 
         # CASE2: load pre-trained model paths
         if args.model_name is not None and not args.model_path:
-            model_path, config_path, model_item = manager.download_model(args.model_name)
-            args.vocoder_name = model_item["default_vocoder"] if args.vocoder_name is None else args.vocoder_name
+            model_path, config_path, model_item = manager.download_model(
+                args.model_name
+            )
+            args.vocoder_name = (
+                model_item["default_vocoder"]
+                if args.vocoder_name is None
+                else args.vocoder_name
+            )
 
         if args.vocoder_name is not None and not args.vocoder_path:
-            vocoder_path, vocoder_config_path, _ = manager.download_model(args.vocoder_name)
+            vocoder_path, vocoder_config_path, _ = manager.download_model(
+                args.vocoder_name
+            )
 
         # CASE3: set custom model paths
         if args.model_path is not None:
@@ -151,7 +162,9 @@ class TTS:
             return
 
         # check the arguments against a multi-speaker model.
-        if synthesizer.tts_speakers_file and (not args.speaker_idx and not args.speaker_wav):
+        if synthesizer.tts_speakers_file and (
+            not args.speaker_idx and not args.speaker_wav
+        ):
             print(
                 " [!] Looks like you use a multi-speaker model. Define `--speaker_idx` to "
                 "select the target speaker. You can list the available speakers for this model by `--list_speaker_idxs`."
@@ -162,16 +175,19 @@ class TTS:
         print(" > Text: {}".format(args.text))
 
         # kick it
-        wav = synthesizer.tts(args.text, args.speaker_idx, args.language_idx, args.speaker_wav)
+        wav = synthesizer.tts(
+            args.text, args.speaker_idx, args.language_idx, args.speaker_wav
+        )
 
         # save the results
         import sounddevice
-        print('playing audio')
-        sounddevice.play(wav, synthesizer.vocoder_config.audio['sample_rate'])
+
+        print("playing audio")
+        sounddevice.play(wav, synthesizer.vocoder_config.audio["sample_rate"])
         sounddevice.wait()
 
-        #print(" > Saving output to {}".format(args.out_path))
-        #synthesizer.save_wav(wav, args.out_path)
+        # print(" > Saving output to {}".format(args.out_path))
+        # synthesizer.save_wav(wav, args.out_path)
 
 
 if __name__ == "__main__":
@@ -180,9 +196,8 @@ if __name__ == "__main__":
         "What the **** are you talking about man? "
         "You are the biggest loser i've ever seen in my life! "
         "You were doing pee pee in your pampers when i was beating players much "
-            "stronger then you! "
+        "stronger then you! "
         "You are not professional, because professionals know how to lose and "
-            "congratulate opponents. you are like a girl crying after i beat you! "
-
+        "congratulate opponents. you are like a girl crying after i beat you! "
     )
     main(text=message)
