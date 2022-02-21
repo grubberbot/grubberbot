@@ -1,1 +1,1 @@
-from grubberbot.utils import utils
+from grubberbot.utils import funcs, utils

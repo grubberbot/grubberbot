@@ -51,3 +51,6 @@ Code is built in python 3.9, install python3.9 before continuing.  If you use `a
    ```
    conda deactivate
    ```
+
+## TODO:
+1. Database migration with Alembic

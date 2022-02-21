@@ -1,9 +1,13 @@
 alembic>=1.7.6
+google-api-python-client>=2.20.0
+mysql-connector-python>=8.0.27
 numpy>=1.19.0
+pandas>=1.4.1
 pyttsx3>=2.90
 pyyaml>=6.0
 sqlalchemy>=1.4.31
 twitchobserver>=0.8.0
-pandas>=1.4.1
-mysql-connector-python>=8.0.27
-google-api-python-client>=2.20.0
+pymysql>=1.0.2
+cloud-sql-python-connector>=0.5.1
+pyyaml>=6.0
+pg8000>=1.24.0

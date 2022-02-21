@@ -1,30 +1,41 @@
-import sqlalchemy as sa  # type: ignore[import]
-from sqlalchemy.orm import Session  # type: ignore[import]
-import pandas as pd  # type: ignore[import]
 import os
+import sys
 from pprint import pprint
 
-GSA_PATH = 'C:/Users/pault/Documents/keys/google_service_account.json'
+import mysql.connector
+import pandas as pd  # type: ignore[import]
+import sqlalchemy as sa  # type: ignore[import]
+from sqlalchemy.orm import Session  # type: ignore[import]
+
+config = {
+    "user": "root",
+}
+sys.exit()
+
 
 class SAEngine:
-
     def __enter__(self):
 
         url = sa.engine.URL.create(
-            drivername='mysql+mysqlconnector',
-            host='34.70.253.226',
-            username='root',
-            password='6cst4P5kmI06Mbua',
-            #host=os.environ["MYSQL_CONNECTION_NAME"],
-            #username=os.environ["MYSQL_USER"],
-            #password=os.environ["MYSQL_PASS"],
+            # drivername="mysql+mysqlconnector",
+            drivername="mysql+mysqldb",
+            host="34.70.253.226",
+            username="root",
+            # password="6cst4P5kmI06Mbua",
+            database="grubberbot-mysql",
+            # query={'unix_socket': '/cloudsql/grubberbot:grubberbot-mysql'}
+            # host=os.environ["MYSQL_CONNECTION_NAME"],
+            # username=os.environ["MYSQL_USER"],
+            # password=os.environ["MYSQL_PASS"],
         )
+        pprint(url)
+        url = str(url) + "?unix_socket=/cloudsql/grubberbot:grubberbot-mysql"
         pprint(url)
 
         engine = sa.create_engine(
             url,
             future=True,
-            connect_args={'use_pure': True},
+            # connect_args={"use_pure": True},
             echo=True,
             echo_pool=True,
         )
@@ -88,5 +99,6 @@ def main():
     df = sa_to_df(result)
     print(df)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
