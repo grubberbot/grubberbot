@@ -1,56 +1,61 @@
-Code is built in python 3.9, install python3.9 before continuing.  If you use `anaconda` then jump to the `Install python via anaconda` section at the bottom before completing these steps.  
+## How to contribute
+Any of the following will help the development of GrubberBot:
+1. Help identify [Issues](https://github.com/grubberbot/grubberbot/issues)
+    - Make a new issue
+    - Talk with people about existing issues
+2. Fix an [Issue](https://github.com/grubberbot/grubberbot/issues)
+    1. Pick an issue
+    2. Make code changes and create a Pull Request
+    3. Link the Pull Request to the issue
+3. Accept Pull Requests
+    1. Read the issue associated with the Pull Request
+    2. Read the code changes, verify that the code changes meet the requirements
+    3. Ask any questions you may have in the Pull Request or linked issue
+4. If you are a mod:
+    - If a PR looks good: accept PRs from branches to `development` (squash and merge)
+    - If `master` is ahead of `development`: create and accept a PR from `master` -> `development`.
+    - If `master` is behind `development`: create a PR from `development` -> `master` (modify the PR if one already exists)
+    - If `development` has changes that need to be deployed quickly: create/accept a PR from `development` -> `production`
 
-## Build this package
-1. Upgrade pip and build
-    ```
-    python -m pip install --upgrade pip
-    python -m pip install --upgrade build
-    ```
-2. Navigate to the base directory and build, install requirements, and install package
-    ```
-    python -m build
-    python -m pip install -r requirements.txt
-    python -m pip install -e . --no-deps
-    ```
-
-## Check style and unit tests
-1. Navigate to the base directory and install requirements for code style and formatting
+## How to create a Pull Request (PR)
+1. Install [Docker](https://docs.docker.com/get-docker/)
+   - Make sure docker-compose is installed by testing with the command `docker-compose version`
+2. Make a branch from `development` branch.  Give it a long, descriptive name.  Make changes to the repo in your new branch
+3. Test the changes by building at least one unit test in the `tests/` directory (uses `pytest`)
+4. Verify style changes (uses Python 3.9)
     ```
     python -m pip install -r requirements-dev.txt
-    ```
-2. Periodically check style and formatting
-    ```
     pre-commit run --all-files
     ```
-3. Periodically run unit tests (from the base directory)
+4. Run tests
     ```
-    pytest
+    docker-compose down -v
+    docker image prune --force --all
+    docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
     ```
-4. NOTE: you can automatically install available `mypy` types with:
+    - Same command but on a single line:
+        ```
+        docker-compose down -v && docker image prune --force --all && docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
+        ```
+5. Shut down Docker when you're done
     ```
-    mypy --install-types
+    docker-compose down -v
     ```
+6. Merge your changes with `development` by making a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) for review (squash and merge)
 
+## Accepting Pull Requests
+Pull Requests should only be accepted if:
+- If code has changed functionality: They have created at least 1 unit test
+- If code passes unit testing
+- If code passes style testing
+- If the PR is squashed
 
-## Install python via anaconda
-1. Install anaconda https://docs.anaconda.com/anaconda/install/index.html
-2. Update `anaconda`: Open an anaconda prompt as administrator (only this step requires admin privileges) and execute the following commands:
-   ```
-   conda update anaconda
-   conda update --all
-   ```
-3. Navigate to the base directory and run the following to create a new `conda` environment named `grubberbot`.  WARNING: This will overwrite any previous `grubberbot` environment you have on your system:
-   ```
-   conda env create -f environment.yml --force
-   ```
-4. Activate the environment
-   ```
-   conda activate grubberbot
-   ```
-5. When you are done, deactivate the environment
-   ```
-   conda deactivate
-   ```
+## How branching works
+The `production` branch is code that is deployed to GrubberBot.  There are two ways that code can get to `production`:
+1. The intended way: PR -> `development` -> `master` -> `production`.  The `master` branch represents the current state of GrubberBot, so Paul reviews all changes (for now).  By having PRs go through `master` the changes are slower but are reviewed.  
+2. The fast way: PR -> `development` -> `production`.  Mods have the power to bypass Paul if the change is urgent.  However, the next time that `master` -> `production`, it will overwrite this temporary change.  
 
 ## TODO:
 1. Database migration with Alembic
+2. Ensure Docker BuildKit is enabled
+3. Modify mypy.ini
