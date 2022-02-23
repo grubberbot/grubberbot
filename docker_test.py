@@ -1,19 +1,10 @@
-import grubberbot as gb
 import sqlalchemy as sa
+
+import grubberbot as gb
 
 
 def main():
-
-    credentials = None
-    db = gb.google.database.Database(credentials, verbose=True)
-    engine = db.engine
-
-    print(engine)
-    metadata = sa.MetaData()
-    metadata.reflect(engine)
-    print(metadata)
-    print(metadata.tables.keys())
-    print('done')
+    gb.google.database.main()
 
 
 if __name__ == "__main__":

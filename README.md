@@ -1,17 +1,16 @@
 ## How to contribute
 Any of the following will help the development of GrubberBot:
-1. Help identify [Issues](https://github.com/grubberbot/grubberbot/issues)
-    - Make a new issue
-    - Talk with people about existing issues
-2. Fix an [Issue](https://github.com/grubberbot/grubberbot/issues)
+1. Make a new [Issue](https://github.com/grubberbot/grubberbot/issues)
+2. Talk about existing [Issues](https://github.com/grubberbot/grubberbot/issues)
+3. Fix an [Issue](https://github.com/grubberbot/grubberbot/issues)
     1. Pick an issue
     2. Make code changes and create a Pull Request
     3. Link the Pull Request to the issue
-3. Accept Pull Requests
+4. Accept Pull Requests
     1. Read the issue associated with the Pull Request
     2. Read the code changes, verify that the code changes meet the requirements
     3. Ask any questions you may have in the Pull Request or linked issue
-4. If you are a mod:
+5. If you are a mod:
     - If a PR looks good: accept PRs from branches to `development` (squash and merge)
     - If `master` is ahead of `development`: create and accept a PR from `master` -> `development`.
     - If `master` is behind `development`: create a PR from `development` -> `master` (modify the PR if one already exists)

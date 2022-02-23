@@ -94,7 +94,12 @@ repos:
     rev: v0.931
     hooks:
     -   id: mypy
-        args: []
+        args: [--show-error-codes]
+        additional_dependencies:
+          - numpy
+          - sqlalchemy-stubs
+          - types-PyYAML
+          - types-PyMySQL
 
   - repo: https://github.com/PyCQA/flake8
     rev: 4.0.1

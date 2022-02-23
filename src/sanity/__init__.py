@@ -1,1 +1,0 @@
-from sanity import example
