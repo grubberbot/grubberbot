@@ -5,7 +5,8 @@ import pandas as pd
 from html2image import Html2Image
 
 GOOGLE_TOKEN = "credentials/google_credentials.json"
-GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
+GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/\
+                    1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
 REFRESH_MESSAGE = "Hi! Looks like "
 
 class cellLocationConstants:
@@ -13,7 +14,8 @@ class cellLocationConstants:
     Constants that help gspread find the cell where the scores
     and the team names are defined here.
     """
-    SHEET_NAME = "Scoresheet" # Name of the sheet inside the Google Sheet where the scores are located
+    # Name of the sheet within the Google Sheet where the scores are located
+    SHEET_NAME = "Scoresheet" 
     TEAM_1_SCORE_ACELL = (
         "Q4" # {Letter}{Number} coordinates where the value is located.
     )
@@ -139,7 +141,7 @@ def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
     Replaces the Jynga inspired variables, {{ var }} in the
     HTML file with their values. Returns the edited string.
     """
-    with open(".\\templates\index.html") as f:
+    with open(".\\templates\\index.html") as f:
 
         edited_html_str = (
             f.read()
@@ -154,10 +156,11 @@ def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
 async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     """
     Takes in the names of both the teams and the score. Html2Image opens
-    a headless browser window (this is why Chrome needs to be added to the Dockerfile)
-    and screenshots the html file, saving it in a file called score.png located in the
-    img  directory inside the assets folder. If the file already exists, it overwrites it)
-    This file is then uploaded to the channel where the !score command was used.
+    a headless browser window (this is why Chrome needs to be added to the 
+    Dockerfile) and screenshots the html file, saving it in a file called 
+    score.png located in the img  directory inside the assets folder. (If the 
+    file already exists, it overwrites it). This file is then uploaded to the
+    channel where the !score command was used.
     """
 
     html = get_html_str(team_1_name, team_2_name, team_1_score, team_2_score)
