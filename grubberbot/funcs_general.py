@@ -5,7 +5,7 @@ import pandas as pd
 from html2image import Html2Image
 
 GOOGLE_TOKEN = "credentials/google_credentials.json"
-GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/ \
+GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/\
                     1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
 REFRESH_MESSAGE = "Hi! Looks like "
 
