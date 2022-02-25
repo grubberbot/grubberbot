@@ -15,9 +15,9 @@ class cellLocationConstants:
     and the team names are defined here.
     """
     # Name of the sheet within the Google Sheet where the scores are located
-    SHEET_NAME = "Scoresheet" 
+    SHEET_NAME = "Scoresheet"
     TEAM_1_SCORE_ACELL = (
-        "Q4" # {Letter}{Number} coordinates where the value is located.
+        "Q4"  # {Letter}{Number} coordinates where the value is located.
     )
     TEAM_2_SCORE_ACELL = "Q5"
 
@@ -156,9 +156,9 @@ def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
 async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     """
     Takes in the names of both the teams and the score. Html2Image opens
-    a headless browser window (this is why Chrome needs to be added to the 
-    Dockerfile) and screenshots the html file, saving it in a file called 
-    score.png located in the img  directory inside the assets folder. (If the 
+    a headless browser window (this is why Chrome needs to be added to the
+    Dockerfile) and screenshots the html file, saving it in a file called
+    score.png located in the img  directory inside the assets folder. (If the
     file already exists, it overwrites it). This file is then uploaded to the
     channel where the !score command was used.
     """
@@ -168,5 +168,5 @@ async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     hti = Html2Image(size=(800, 352))
     hti.load_file(".\\templates\\assets\\bg.jpg")
     hti.screenshot(
-        html_str=html, css_file='.\\templates\\styles\\main.css', save_as='score.png'
+        html_str=html, css_file=".\\templates\\styles\\main.css", save_as="score.png"
     )
