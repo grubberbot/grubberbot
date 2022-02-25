@@ -1180,6 +1180,7 @@ async def league_info(ctx, discord_mention: Optional[discord.Member] = None):
 
     await ctx.send(message)
 
+
 @commands.command(name="score")
 async def score(ctx):
     data = fgg.get_scores()
