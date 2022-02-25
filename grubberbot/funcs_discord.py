@@ -1181,6 +1181,16 @@ async def league_info(ctx, discord_mention: Optional[discord.Member] = None):
     await ctx.send(message)
 
 
+@commands.command(name="score")
+async def score(ctx):
+    data = fgg.get_scores()
+    html = fgg.get_html_str(data[0], data[1], data[2], data[3])
+    await fgg.save_image(html)  # assets/img/score.png should have the updated score now
+
+    file = discord.File("assets/img/score.png")
+    await ctx.send(file=file)
+
+
 class CustomClient(discord.Client):
     async def on_ready(self):
         guild = discord.utils.get(self.guilds, name=GUILD_NAME)

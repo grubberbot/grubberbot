@@ -125,6 +125,7 @@ def main():
 
     # General commands
     bot.add_command(fdd.league_info)
+    bot.add_command(fdd.score)
 
     # League membership
     bot.add_command(fdd.user_set_chesscom)

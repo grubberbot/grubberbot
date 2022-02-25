@@ -3,11 +3,29 @@ import datetime
 import gspread
 import numpy as np
 import pandas as pd
+from html2image import Html2Image
 
 GOOGLE_TOKEN = "credentials/google_credentials.json"
-GOOGLE_SHEET_NAME = "1SFH7ntDpDW7blX_xBU_m_kSmvY2tLXkuwq-TOM9wyew"
-
+GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/\
+                    1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
 REFRESH_MESSAGE = "Hi! Looks like "
+
+
+class cellLocationConstants:
+    """
+    Constants that help gspread find the cell where the scores
+    and the team names are defined here.
+    """
+
+    # Name of the sheet within the Google Sheet where the scores are located
+    SHEET_NAME = "Scoresheet"
+    TEAM_1_SCORE_ACELL = (
+        "Q4"  # {Letter}{Number} coordinates where the value is located.
+    )
+    TEAM_2_SCORE_ACELL = "Q5"
+
+    TEAM_1_NAME_ACELL = "P4"
+    TEAM_2_NAME_ACELL = "P5"
 
 
 def get_month(month_delta=0, to_str=True):
@@ -39,7 +57,7 @@ def gen_pairing_thread_name(game_id, white_name, black_name):
 
 def arr_to_sheet(arr, sheet=0):
     gc = gspread.service_account(filename=GOOGLE_TOKEN)
-    sh = gc.open_by_key(GOOGLE_SHEET_NAME)
+    sh = gc.open_by_url(GOOGLE_SHEET_URL)
     sheet = sh.get_worksheet(sheet)
 
     if len(arr):
@@ -96,3 +114,63 @@ def dfs_to_sheet(dfs, sheet=0):
         sheet_array.append(row)
 
     arr_to_sheet(sheet_array, sheet=sheet)
+
+
+def get_scores():
+    """
+    Uses gspread to get the scores and the names of the teams.
+
+    Returns a list with 4 items:
+    * l[0] = Name of the 1st team
+    * l[1] = Name of the 2nd team
+    * l[2] = Points scored by the 1st team
+    * l[3] = Points scored by the 2nd team
+    """
+    gc = gspread.service_account(filename=GOOGLE_TOKEN)
+
+    sheet = gc.open_by_url(cellLocationConstants.GOOGLE_SHEET_URL)
+    scoresheet = sheet.worksheet(cellLocationConstants.SCORESHEET_NAME)
+
+    team1_score = scoresheet.acell(cellLocationConstants.TEAM_1_SCORE_ACELL).value
+    team2_score = scoresheet.acell(cellLocationConstants.TEAM_2_SCORE_ACELL).value
+
+    team1_name = scoresheet.acell(cellLocationConstants.TEAM_1_NAME_ACELL).value
+    team2_name = scoresheet.acell(cellLocationConstants.TEAM_2_NAME_ACELL).value
+
+    return [team1_name, team2_name, team1_score, team2_score]
+
+
+def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
+    """
+    Replaces the Jynga inspired variables, {{ var }} in the
+    HTML file with their values. Returns the edited string.
+    """
+    with open("templates/index.html") as f:
+
+        edited_html_str = (
+            f.read()
+            .replace("{{ team_1_name }}", team_1_name)
+            .replace("{{ team_2_name }}", team_2_name)
+            .replace("{{ team_1_score }}", team_1_score)
+            .replace("{{ team_2_score }}", team_2_score)
+        )
+        return edited_html_str
+
+
+async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
+    """
+    Takes in the names of both the teams and the score. Html2Image opens
+    a headless browser window (this is why Chrome needs to be added to the
+    Dockerfile) and screenshots the html file, saving it in a file called
+    score.png located in the img  directory inside the assets folder. (If the
+    file already exists, it overwrites it). This file is then uploaded to the
+    channel where the !score command was used.
+    """
+
+    html = get_html_str(team_1_name, team_2_name, team_1_score, team_2_score)
+
+    hti = Html2Image(size=(800, 352))
+    hti.load_file("templates/assets/bg.jpg")
+    hti.screenshot(
+        html_str=html, css_file="templates/styles/main.css", save_as="score.png"
+    )
