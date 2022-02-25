@@ -10,6 +10,7 @@ GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/\
                     1dJzqT0R5bfv_22je6W-rL0S0qvnb8cR5QIQkMV5Q32g/"
 REFRESH_MESSAGE = "Hi! Looks like "
 
+
 class cellLocationConstants:
     """
     Constants that help gspread find the cell where the scores
@@ -42,6 +43,7 @@ def get_month(month_delta=0, to_str=True):
     if to_str:
         date = date.strftime("%Y%B")
     return date
+
 
 def gen_substitute_thread_name(seed_id):
     name = f"s{seed_id} Substitute Request"
