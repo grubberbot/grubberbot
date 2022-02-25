@@ -145,7 +145,7 @@ def get_html_str(team_1_name, team_2_name, team_1_score, team_2_score):
     Replaces the Jynga inspired variables, {{ var }} in the
     HTML file with their values. Returns the edited string.
     """
-    with open(".\\templates\\index.html") as f:
+    with open("templates/index.html") as f:
 
         edited_html_str = (
             f.read()
@@ -170,7 +170,7 @@ async def save_image(team_1_name, team_2_name, team_1_score, team_2_score):
     html = get_html_str(team_1_name, team_2_name, team_1_score, team_2_score)
 
     hti = Html2Image(size=(800, 352))
-    hti.load_file(".\\templates\\assets\\bg.jpg")
+    hti.load_file("templates/assets/bg.jpg")
     hti.screenshot(
-        html_str=html, css_file=".\\templates\\styles\\main.css", save_as="score.png"
+        html_str=html, css_file="templates/styles/main.css", save_as="score.png"
     )
