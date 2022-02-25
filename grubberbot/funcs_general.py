@@ -1,4 +1,5 @@
 import datetime
+
 import gspread
 import numpy as np
 import pandas as pd
@@ -14,6 +15,7 @@ class cellLocationConstants:
     Constants that help gspread find the cell where the scores
     and the team names are defined here.
     """
+
     # Name of the sheet within the Google Sheet where the scores are located
     SHEET_NAME = "Scoresheet"
     TEAM_1_SCORE_ACELL = (
