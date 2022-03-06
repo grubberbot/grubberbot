@@ -14,13 +14,13 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-  test:
+  dev:
     build:
       context: .
-      target: test
+      target: dev
     ports:
-      - 8000:5000
-    image: grubberbot:test
+      - 8001:5001
+    image: grubberbot:dev
     volumes:
       - ./:/app
     depends_on:

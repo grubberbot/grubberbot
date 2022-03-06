@@ -97,7 +97,6 @@ repos:
         args: [--show-error-codes]
         additional_dependencies:
           - numpy
-          - sqlalchemy-stubs
           - types-PyYAML
           - types-PyMySQL
 

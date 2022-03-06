@@ -1,2 +1,2 @@
-from grubberbot.utils import sanity, funcs
+from grubberbot.utils import funcs, sanity
 from grubberbot.utils.database import Database

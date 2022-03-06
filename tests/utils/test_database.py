@@ -1,42 +1,44 @@
-import grubberbot as gb
-import alembic.config
+import pandas as pd
+import pytest
 import sqlalchemy as sa
 
-
-class AlembicSetup:
-    def setup_method(self, method):
-        args = gb.utils.funcs.ParseArgs()
-        self.db = gb.utils.Database(args, verbose=True)
-        self.db.alembic_upgrade_head()
-        self.db.load_schemas()
-
-    def teardown_method(self, method):
-        '''
-        print('All tables:')
-        for key, table in self.db.metadata.tables.items():
-            print(f'* {table.schema}.{key}')
-        argv = [
-            #'--raiseerr',
-            'downgrade',
-            'base',
-        ]
-        alembic.config.main(argv=argv)
-        '''
-        pass
+import alembic.config
+import grubberbot as gb
 
 
-class TestTTS(AlembicSetup):
+@pytest.fixture
+def db():
+    args = gb.utils.funcs.ParseArgs()
+    pytest_db = gb.utils.Database(args, verbose=False)
+    pytest_db.alembic_upgrade_head()
+    pytest_db.load_schemas()
+    return pytest_db
 
-    def test_exists_tts(self):
-        assert 'twitch.tts' in self.db.metadata.tables.keys()
 
-    def test_exists_tts_permissions(self):
-        assert 'twitch.tts_permissions' in self.db.metadata.tables.keys()
+def test_exists_twitch_tts(db):
+    assert "twitch.tts" in db.metadata.tables.keys()
 
-class TestRapidLeague(AlembicSetup):
 
-    def test_exists_tts(self):
-        assert 'discord.user' in self.db.metadata.tables.keys()
+def test_exists_twitch_tts_permissions(db):
+    assert "twitch.tts_permissions" in db.metadata.tables.keys()
+
+
+def test_exists_discord_user(db):
+    assert "discord.user" in db.metadata.tables.keys()
+
+
+def test_set_user(db):
+    users = [
+        {"discord_id": 1, "chesscom_name": "pawngrubber"},
+        {"discord_id": 3, "chesscom_name": "lalizig"},
+    ]
+
+    for user in users:
+        gb.discord.rapid_league.set_user(db, **user)
+
+    df = gb.discord.rapid_league.get_user(db, users[0]["discord_id"])
+    val = df["chesscom_name"][0]
+    assert val == users[0]["chesscom_name"]
 
 
 if __name__ == "__main__":

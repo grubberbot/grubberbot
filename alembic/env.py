@@ -53,7 +53,6 @@ def run_migrations_online():
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-
     import grubberbot as gb
 
     args = gb.utils.funcs.ParseArgs()

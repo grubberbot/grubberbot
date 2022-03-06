@@ -1,16 +1,18 @@
 import os
 import sys
 import typing
-import alembic.config
+
+import pandas as pd
 import pymysql
 import sqlalchemy as sa
 import sqlalchemy.orm
 import yaml
-import pandas as pd
 from google.cloud.sql.connector import connector
 from google.cloud.sql.connector.connector import Connector
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build as gs_build
+
+import alembic.config
 from grubberbot.utils.funcs import ParseArgs
 
 
@@ -99,9 +101,9 @@ class Database:
         # 'grant all privileges on database grubber to "grubberbot@grubberbot.iam";'
 
         argv = [
-            #'--raiseerr',
-            'upgrade',
-            'head',
+            # '--raiseerr',
+            "upgrade",
+            "head",
         ]
         alembic.config.main(argv=argv)
 
@@ -133,30 +135,18 @@ class Database:
         stmt,
     ):
         with sa.orm.Session(self.engine) as session:
-            result = session.execute(stmt)
+            session.execute(stmt)
 
     def print_table(self, schema: str, table: str):
         schema_table = f"{schema}.{table}"
         for column in self.metadata.tables[schema_table].columns:
-            column = str(column).split(".")[-1]
-            column = getattr(self.metadata.tables[schema_table].c, column)
+            # column = str(column).split(".")[-1]
+            # column = getattr(self.metadata.tables[schema_table].c, column)
             print(repr(column))
 
 
 def main():
-    args = ParseArgs()
-    db = Database(args, verbose=True)
-
-    print(db.engine)
-    metadata = sa.MetaData()
-    schemas = db.get_schemas()
-
-    for schema in db.get_schemas():
-        metadata.reflect(db.engine, schema=schema)
-
-    print('All tables:')
-    for key, table in metadata.tables.items():
-        print(f'* {table.schema}.{key}')
+    pass
 
 
 if __name__ == "__main__":

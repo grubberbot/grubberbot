@@ -1,5 +1,6 @@
 alembic>=1.7.6
 cloud-sql-python-connector>=0.5.1
+disnake>=2.4.0
 google-api-python-client>=2.20.0
 mysql-connector-python>=8.0.27
 numpy>=1.21.0
@@ -10,4 +11,3 @@ pyttsx3>=2.90
 pyyaml>=6.0
 sqlalchemy>=1.4.31
 twitchobserver>=0.8.0
-disnake>=2.4.0

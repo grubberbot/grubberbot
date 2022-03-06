@@ -20,28 +20,29 @@ Any of the following will help the development of GrubberBot:
 1. Install [Docker](https://docs.docker.com/get-docker/)
    - Make sure docker-compose is installed by testing with the command `docker-compose version`
 2. Make a branch from `development` branch.  Give it a long, descriptive name.  Make changes to the repo in your new branch
-3. Test the changes by building at least one unit test in the `tests/` directory (uses `pytest`)
-4. Verify style changes (uses Python 3.9)
+3. Do development stuff in `dev.py` and run `dev.py` in Docker
+    ```
+    docker-compose down -v
+    docker image prune --force
+    docker-compose -f docker-compose-dev.yml up --build --force-recreate --abort-on-container-exit --exit-code-from dev --remove-orphans
+    ```
+4. Test the changes by building at least one unit test in the `tests/` directory (uses `pytest`)
+5. Verify style changes (uses Python 3.9)
     ```
     python -m pip install -r requirements-dev.txt
     pre-commit run --all-files
     ```
-4. Run tests
+6. Run tests
     ```
     docker-compose down -v
     docker image prune --force
-    docker-compose up --build --force-recreate --remove-orphans
+    docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
     ```
-    - Same command but on a single line:
-        ```
-        docker-compose down -v && docker image prune --force && docker-compose up --build --force-recreate --remove-orphans
-        ```
-docker-compose down -v && docker image prune --force && docker-compose up -d --build --force-recreate --remove-orphans
-5. Shut down Docker when you're done
+7. Shut down Docker when you're done
     ```
     docker-compose down -v
     ```
-6. Merge your changes with `development` by making a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) for review (squash and merge)
+8. Merge your changes with `development` by making a [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) for review (squash and merge)
 
 ## Accepting Pull Requests
 Pull Requests should only be accepted if:
@@ -60,3 +61,4 @@ The `production` branch is code that is deployed to GrubberBot.  There are two w
 2. Ensure Docker BuildKit is enabled
 3. Modify mypy.ini - automatically find instead of hard-code
 4. Logging
+5. Faster cycle time with better docker `dev` commands
