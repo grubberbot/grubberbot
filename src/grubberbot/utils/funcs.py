@@ -35,8 +35,8 @@ def parse_args() -> argparse.Namespace:
 
 class ParseArgs:
     args: argparse.Namespace
-    yml: typing.Union[dict[str, str], None]
-    gsa: typing.Union[Credentials, None]
+    yml: typing.Optional[dict[str, str]]
+    gsa: typing.Optional[Credentials]
 
     def __init__(self):
         self.args = parse_args()

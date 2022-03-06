@@ -57,7 +57,7 @@ def run_migrations_online():
     import grubberbot as gb
 
     args = gb.utils.funcs.ParseArgs()
-    db = gb.google.database.Database(args, verbose=True)
+    db = gb.utils.Database(args, verbose=False)
     connectable = db.engine
 
     """

@@ -1,19 +1,22 @@
 import os
 import sys
 import typing
-from pprint import pprint
-
+import alembic.config
 import pymysql
 import sqlalchemy as sa
 import sqlalchemy.orm
 import yaml
+import pandas as pd
 from google.cloud.sql.connector import connector
 from google.cloud.sql.connector.connector import Connector
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build as gs_build
-
-import grubberbot as gb
 from grubberbot.utils.funcs import ParseArgs
+
+
+def sa_to_df(result: sa.engine.CursorResult) -> pd.DataFrame:
+    df = pd.DataFrame(result.all(), columns=result.keys())
+    return df
 
 
 class Database:
@@ -31,6 +34,8 @@ class Database:
             self.engine = self._create_engine_local()
         else:
             self.engine = self._create_engine_cloud(self.args.gsa)
+
+        self.metadata = sa.MetaData()
 
     def _create_engine_cloud(
         self,
@@ -85,24 +90,73 @@ class Database:
             database="grubber",
             port="5432",
         )
-        engine = sa.create_engine(url, **self.engine_kwargs)
+        engine = sa.create_engine(url, **kwargs, **self.engine_kwargs)
         return engine
 
-    def init_database(self):
+    def alembic_upgrade_head(self):
         # 'create database grubber;'
         # '\connect grubber;'
         # 'grant all privileges on database grubber to "grubberbot@grubberbot.iam";'
-        pass
+
+        argv = [
+            #'--raiseerr',
+            'upgrade',
+            'head',
+        ]
+        alembic.config.main(argv=argv)
+
+    def load_schemas(self):
+        insp = sa.inspect(self.engine)
+        schemas = insp.get_schema_names()
+        for schema in schemas:
+            self.metadata.reflect(self.engine, schema=schema)
+        return self.metadata
+
+    def run_select(
+        self,
+        stmt,
+        filename: typing.Optional[str] = None,
+        load_cache: bool = False,
+    ) -> pd.DataFrame:
+        if load_cache and filename is not None:
+            if os.path.exists(filename):
+                return pd.read_parquet(filename)
+        with sa.orm.Session(self.engine) as session:
+            result = session.execute(stmt)
+        df = sa_to_df(result)
+        if filename is not None:
+            df.to_parquet(filename)
+        return df
+
+    def run_delete(
+        self,
+        stmt,
+    ):
+        with sa.orm.Session(self.engine) as session:
+            result = session.execute(stmt)
+
+    def print_table(self, schema: str, table: str):
+        schema_table = f"{schema}.{table}"
+        for column in self.metadata.tables[schema_table].columns:
+            column = str(column).split(".")[-1]
+            column = getattr(self.metadata.tables[schema_table].c, column)
+            print(repr(column))
 
 
 def main():
-    args = gb.utils.funcs.ParseArgs()
+    args = ParseArgs()
     db = Database(args, verbose=True)
 
     print(db.engine)
     metadata = sa.MetaData()
-    metadata.reflect(db.engine)
-    print(metadata.tables.keys())
+    schemas = db.get_schemas()
+
+    for schema in db.get_schemas():
+        metadata.reflect(db.engine, schema=schema)
+
+    print('All tables:')
+    for key, table in metadata.tables.items():
+        print(f'* {table.schema}.{key}')
 
 
 if __name__ == "__main__":

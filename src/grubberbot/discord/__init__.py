@@ -1,1 +1,1 @@
-# from grubberbot.discord import bot
+from grubberbot.discord import bot, rapid_league

@@ -29,13 +29,14 @@ Any of the following will help the development of GrubberBot:
 4. Run tests
     ```
     docker-compose down -v
-    docker image prune --force --all
-    docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
+    docker image prune --force
+    docker-compose up --build --force-recreate --remove-orphans
     ```
     - Same command but on a single line:
         ```
-        docker-compose down -v && docker image prune --force --all && docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
+        docker-compose down -v && docker image prune --force && docker-compose up --build --force-recreate --remove-orphans
         ```
+docker-compose down -v && docker image prune --force && docker-compose up -d --build --force-recreate --remove-orphans
 5. Shut down Docker when you're done
     ```
     docker-compose down -v
@@ -55,6 +56,7 @@ The `production` branch is code that is deployed to GrubberBot.  There are two w
 2. The fast way: PR -> `development` -> `production`.  Mods have the power to bypass Paul if the change is urgent.  However, the next time that `master` -> `production`, it will overwrite this temporary change.  
 
 ## TODO:
-1. Database migration with Alembic
+1. Database migration with Alembic - use autogeneration
 2. Ensure Docker BuildKit is enabled
-3. Modify mypy.ini
+3. Modify mypy.ini - automatically find instead of hard-code
+4. Logging
