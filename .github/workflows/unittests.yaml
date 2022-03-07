@@ -22,7 +22,7 @@ jobs:
       run: docker build --target base -t grubberbot:base .
 
     - name: Build docker-compose to run unit tests
-      run: docker-compose up --build
+      run: docker-compose up --build --exit-code-from test
 
     - name: Check running containers
       run: docker ps -a
