@@ -18,8 +18,10 @@ services:
     build:
       context: .
       target: dev
+      args:
+        - DOCKER_PYTHON_VERSION=3.9
     ports:
-      - 8001:5001
+      - 8008:5008
     image: grubberbot:dev
     volumes:
       - ./:/app

@@ -22,7 +22,7 @@ Any of the following will help the development of GrubberBot:
 2. Make a branch from `development` branch.  Give it a long, descriptive name.  Make changes to the repo in your new branch
 3. Do development stuff in `dev.py` and run `dev.py` in Docker
     ```
-    docker-compose down -v
+    docker-compose -f docker-compose-dev.yml down -v
     docker image prune --force
     docker-compose -f docker-compose-dev.yml up --build --force-recreate --abort-on-container-exit --exit-code-from dev --remove-orphans
     ```
@@ -34,9 +34,9 @@ Any of the following will help the development of GrubberBot:
     ```
 6. Run tests
     ```
-    docker-compose down -v
+    docker-compose -f docker-compose-test.yml down -v
     docker image prune --force
-    docker-compose up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
+    docker-compose -f docker-compose-test.yml up --build --force-recreate --abort-on-container-exit --exit-code-from test --remove-orphans
     ```
 7. Shut down Docker when you're done
     ```

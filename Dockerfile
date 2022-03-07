@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.9-slim-buster AS base
+ARG DOCKER_PYTHON_VERSION=3.9
+FROM python:${DOCKER_PYTHON_VERSION}-slim-buster AS base
 
 WORKDIR /app
 

@@ -1,5 +1,6 @@
 version: "3.9"
 
+
 services:
 
   db:
@@ -18,9 +19,11 @@ services:
     build:
       context: .
       target: test
+      args:
+        - DOCKER_PYTHON_VERSION=${DOCKER_COMPOSE_PYTHON_VERSION:-3.9}
     ports:
-      - 8000:5000
-    image: grubberbot:test
+      - 8001:5001
+    image: grubberbot:test-${DOCKER_COMPOSE_PYTHON_VERSION:-3.9}
     volumes:
       - ./:/app
     depends_on:
