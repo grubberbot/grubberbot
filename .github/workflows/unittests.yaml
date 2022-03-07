@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]
+        python-version: [3.8, 3.9, "3.10"]
       fail-fast: false
 
     steps:
@@ -27,8 +27,14 @@ jobs:
     - name: Set Python Version
       run: export DOCKER_COMPOSE_PYTHON_VERSION=${{ matrix.python-version }}
 
-    - name: Build and Run Test
-      run: docker-compose -f docker-compose-test.yml up --build --exit-code-from test
+    - name: Check Python Version
+      run: echo $DOCKER_COMPOSE_PYTHON_VERSION
+
+    - name: Cache Docker
+      run: docker-compose -f docker-compose-test.yml build
+
+    - name: Run Tests
+      run: docker-compose -f docker-compose-test.yml up --exit-code-from test
 
     - name: Check running containers
       run: docker ps -a
