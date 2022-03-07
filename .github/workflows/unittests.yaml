@@ -28,7 +28,7 @@ jobs:
       run: export DOCKER_COMPOSE_PYTHON_VERSION=${{ matrix.python-version }}
 
     - name: Build and Run Test
-      run: docker-compose -f docker-compose-test.yml up --build --exit-code-from test-${{ matrix.python-version }}
+      run: docker-compose -f docker-compose-test.yml up --build --exit-code-from test
 
     - name: Check running containers
       run: docker ps -a
