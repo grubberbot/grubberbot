@@ -4,4 +4,4 @@ services:
     build:
       context: .
       target: prod
-    image: template:prod
+    image: grubberbot:prod

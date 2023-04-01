@@ -1,13 +1,3 @@
-This repository is a template for future repositories.  Features:
-- Can be packaged with `pip`
-- Working `pytest` tests in `tests` directory
-- Install with `requirements/prod.txt` and `requirements/dev.txt`
-- Environment installed inside a Docker Container
-- `README.md` file with repeatable instructions
-- Style checks using `flake8`, `mypy`, and `black` bundled into a single `pre-commit` action
-- GitHub Actions automates style and unit tests across matrixed Python versions
-- Uses Python 3.10 because stable [TensorFlow](https://www.tensorflow.org/install/pip) doesn't yet support Python 3.11
-
 ## Develop without Docker
 1. Create a new Python virtual environment, make sure the version matches the Dockerfile
 2. In this virtual environment, install necessary requirements files
@@ -67,3 +57,6 @@ Code development is in a Docker image, use these steps to spin up the image
     1. `REPO_NAME`: The name of the Docker repository
     2. `DOCKERHUB_USERNAME`: The DockerHub username
     3. `DOCKERHUB_TOKEN`: A token for access to the repository
+
+## TODO:
+1. Update this README.md

@@ -1,1 +1,1 @@
-from package_one import sanity
+from grubberbot import sanity

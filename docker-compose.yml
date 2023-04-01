@@ -4,8 +4,8 @@ services:
     build:
       context: .
       target: dev
-    image: template:dev
-    container_name: template_dev_container
+    image: grubberbot:dev
+    container_name: grubberbot_dev_container
     volumes:
       - type: bind
         source: .
