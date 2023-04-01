@@ -4,4 +4,24 @@ services:
     build:
       context: .
       target: prod
+    ports:
+      - 8000:5000
     image: grubberbot:prod
+    volumes:
+      - ./:/app
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=grubberbot@grubberbot.iam
+      - POSTGRES_PASSWORD=example
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    external: true
+    driver: local

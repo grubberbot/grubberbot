@@ -1,15 +1,36 @@
 services:
 
+  db:
+    image: postgres:14
+    # restart: always
+    environment:
+      - POSTGRES_USER=grubberbot@grubberbot.iam
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=grubber
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+
   dev:
     build:
       context: .
       target: dev
+    ports:
+      - 8008:5008
     image: grubberbot:dev
     container_name: grubberbot_dev_container
     volumes:
       - type: bind
         source: .
         target: /repo
+      - ./:/app
+    depends_on:
+      - db
     stdin_open: true
     tty: true
     entrypoint: /bin/bash
+
+volumes:
+  db:
+    driver: local
