@@ -77,7 +77,9 @@ repos:
       - id: pretty-format-json
         args: ["--autofix", "--no-ensure-ascii", "--no-sort-keys"]
       - id: requirements-txt-fixer
-        args: ["requirements/prod.in", "requirements/dev.in"] # does not work
+        args: ["requirements/prod.in"]
+      - id: requirements-txt-fixer
+        args: ["requirements/dev.in"]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
         exclude: \.(html|svg)$
@@ -91,9 +93,9 @@ repos:
     rev: v1.1.1
     hooks:
     -   id: mypy
-        args: [--show-error-codes]
-        additional_dependencies:
-          - numpy
+        args:
+          - --show-error-codes
+        language: system
 
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0

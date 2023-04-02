@@ -44,7 +44,6 @@ class ParseArgs:
         self.gsa = self._get_gsa_creds()
 
     def _get_yml_creds(self) -> typing.Union[dict[str, str], None]:
-
         if self.args.credential_directory is None:
             return None
 
@@ -55,7 +54,6 @@ class ParseArgs:
         return yml_creds
 
     def _get_gsa_creds(self) -> typing.Union[Credentials, None]:
-
         if self.args.credential_directory is None:
             return None
 

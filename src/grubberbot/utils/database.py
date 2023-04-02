@@ -45,7 +45,6 @@ class Database:
         use_root=False,
         **kwargs,
     ) -> sa.engine.Engine:
-
         if use_root and self.args.yml is not None:
             kwargs.update(
                 {
