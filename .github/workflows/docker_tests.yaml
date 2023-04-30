@@ -12,7 +12,12 @@ on:
 jobs:
   unittests:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_TAG: gha
     steps:
+    -
+      name: Set DOCKER_TAG environment variable
+      run: echo "DOCKER_TAG is set to $DOCKER_TAG"
     -
       name: Checkout code
       uses: actions/checkout@v3
@@ -38,7 +43,7 @@ jobs:
         outputs: type=docker
     -
       name: Unit tests
-      run: docker run ${{ secrets.REPO_NAME }}:gha pytest
+      run: docker-compose run ${{ secrets.REPO_NAME }}:gha pytest
     -
       name: Style tests
-      run: docker run ${{ secrets.REPO_NAME }}:gha pre-commit run --all-files
+      run: docker-compose run ${{ secrets.REPO_NAME }}:gha pre-commit run --all-files

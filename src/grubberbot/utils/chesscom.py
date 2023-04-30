@@ -3,7 +3,6 @@ import urllib.request
 
 
 def get_player_id(chesscom_name):
-
     # Get url
     url = f"https://api.chess.com/pub/player/{chesscom_name}"
     try:

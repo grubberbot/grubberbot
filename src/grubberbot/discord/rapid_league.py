@@ -16,7 +16,6 @@ def set_user(
     discord_id: int,
     chesscom_name: str,
 ):
-
     # TODO: update to sqlalchemy ORM instead of core
 
     chesscom_id = chesscom.get_player_id(chesscom_name)
