@@ -48,8 +48,5 @@ jobs:
       name: Install git
       run: sudo apt-get update && sudo apt-get install -y git
     -
-      name: Is git installed?
-      run: docker-compose run --entrypoint "git" dev
-    -
       name: Style tests
       run: docker-compose run --entrypoint "pre-commit run --all-files" dev
