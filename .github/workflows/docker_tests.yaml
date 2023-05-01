@@ -45,10 +45,5 @@ jobs:
       name: Unit tests
       run: docker-compose run --entrypoint "pytest" dev
     -
-      name: Install git
-      run: sudo apt-get update && sudo apt-get install -y git
-    -
       name: Style tests
-      run: |
-        docker-compose run dev
-        pre-commit run --all-files
+      run: docker run ${{ secrets.REPO_NAME }}:gha pre-commit run --all-files
