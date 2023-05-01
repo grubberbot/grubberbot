@@ -43,7 +43,7 @@ jobs:
         outputs: type=docker
     -
       name: Unit tests
-      run: docker-compose run --entrypoint "pytest" ${{ secrets.REPO_NAME }}:gha
+      run: docker-compose run --entrypoint "pytest" dev
     -
       name: Style tests
-      run: docker-compose run --entrypoint "pre-commit run --all-files" ${{ secrets.REPO_NAME }}:gha 
+      run: docker-compose run --entrypoint "pre-commit run --all-files" dev
