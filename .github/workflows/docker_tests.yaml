@@ -42,8 +42,14 @@ jobs:
         cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.REPO_NAME }}:cache,mode=max
         outputs: type=docker
     -
-      name: Style tests
-      run: docker-compose run --entrypoint "pre-commit run --all-files" dev
-    -
       name: Unit tests
       run: docker-compose run --entrypoint "pytest" dev
+    -
+      name: Install git
+      run: sudo apt-get update && sudo apt-get install -y git
+    -
+      name: Is git installed?
+      run: docker-compose run --entrypoint "git" dev
+    -
+      name: Style tests
+      run: docker-compose run --entrypoint "pre-commit run --all-files" dev
