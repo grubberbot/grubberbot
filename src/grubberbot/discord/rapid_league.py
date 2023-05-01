@@ -53,7 +53,9 @@ def get_user(
     discord_id: int,
 ):
     table = db.metadata.tables["discord.user"]
-    stmt = sa.select(table).where(table.c.discord_id == discord_id)
+    stmt = sa.select(table).where(  # type: ignore[arg-type]
+        table.c.discord_id == discord_id
+    )
     df = db.run_select(stmt)
     return df
 

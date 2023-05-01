@@ -11,12 +11,14 @@ from google.cloud.sql.connector import connector
 from google.cloud.sql.connector.connector import Connector
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build as gs_build
+from sqlalchemy.engine import CursorResult  # type: ignore[attr-defined]
+from sqlalchemy.orm import Session
 
 import alembic.config
 from grubberbot.utils.funcs import ParseArgs
 
 
-def sa_to_df(result: sa.engine.CursorResult) -> pd.DataFrame:
+def sa_to_df(result: CursorResult) -> pd.DataFrame:
     df = pd.DataFrame(result.all(), columns=result.keys())
     return df
 
@@ -122,7 +124,7 @@ class Database:
         if load_cache and filename is not None:
             if os.path.exists(filename):
                 return pd.read_parquet(filename)
-        with sa.orm.Session(self.engine) as session:
+        with Session(self.engine) as session:  # type: ignore[attr-defined]
             result = session.execute(stmt)
         df = sa_to_df(result)
         if filename is not None:
